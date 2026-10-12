@@ -1,0 +1,23 @@
+name: Cross-platform checks
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        node: [22, 24]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: node --test test/integration.test.mjs
+        env:
+          AUDITOR_BUILD: '1'
+      - run: node dist/cli.mjs discover_agents
+      - run: npx mcpb validate manifest.json
