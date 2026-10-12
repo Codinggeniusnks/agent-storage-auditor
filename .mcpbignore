@@ -1,0 +1,10 @@
+src/
+test/
+scripts/
+.github/
+node_modules/
+.npm-cache/
+package-lock.json
+.gitignore
+*.zip
+*.mcpb

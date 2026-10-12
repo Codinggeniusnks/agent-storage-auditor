@@ -1,0 +1,22 @@
+{
+  "manifest_version": "0.3",
+  "name": "agent-storage-auditor",
+  "display_name": "Agent Storage Auditor",
+  "version": "1.0.0",
+  "description": "Audit local AI-agent disk storage: folder sizes, paths, purposes and largest files. Read-only and on demand.",
+  "author": { "name": "Agent Storage Auditor contributors" },
+  "server": {
+    "type": "node",
+    "entry_point": "dist/server.mjs",
+    "mcp_config": { "command": "node", "args": ["${__dirname}/dist/server.mjs", "${user_config.allowed_directories}"] }
+  },
+  "compatibility": { "platforms": ["win32", "darwin", "linux"], "runtimes": { "node": ">=22" } },
+  "user_config": {
+    "allowed_directories": { "type": "directory", "title": "Folders you permit the auditor to scan", "description": "Select agent data folders or workspaces. Only these folders and their children can be scanned. Selecting your entire home folder grants broader access.", "multiple": true, "required": true }
+  },
+  "tools": [
+    { "name": "discover_agents", "description": "Detect known agent storage within permitted folders" },
+    { "name": "scan_storage", "description": "Measure logical file sizes without reading contents" },
+    { "name": "describe_folder", "description": "Explain a permitted folder with confidence and evidence" }
+  ]
+}
